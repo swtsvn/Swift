@@ -9,6 +9,7 @@
 import SpriteKit
 import GameplayKit
 import AVFoundation
+import CoreImage
 
 class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
     
@@ -21,6 +22,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 	private var scoreLabel : SKLabelNode?
 	private var highScoreLabel : SKLabelNode?
 	private var missedLabel : SKLabelNode?
+	private var takePhotoLabel : SKLabelNode?
 	private var bgPlayer : AVAudioPlayer?	
 	private var selectPlayer : AVAudioPlayer?
 	let snowCategory : UInt32 = 0x1
@@ -28,16 +30,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 	var savefilename : String = ""
 	var data = GameData()
 	
+	var PhotoCounter : UInt32 = 0;
+	var imageop = AVCaptureStillImageOutput()
+	let captureSession = AVCaptureSession()
+	
 	override func didMove(to view: SKView) {
 		load()
 	}
-    override func sceneDidLoad() {
+	
+	override func sceneDidLoad() {
 	}
 	
 	func load(){
-        
+        self.initialized = true
 	    self.lastUpdateTime = 0
-        
+       
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//CoreDataDemo") as? SKLabelNode
         if let label = self.label {
@@ -48,6 +55,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 		self.scoreLabel = self.childNode(withName: "//scoreLabel") as? SKLabelNode
 		self.highScoreLabel = self.childNode(withName: "//highScoreLabel") as? SKLabelNode
 		self.missedLabel = self.childNode(withName: "//missedLabel") as? SKLabelNode
+		self.takePhotoLabel = self.childNode(withName: "//takePhotoLabel") as? SKLabelNode
 		
 		
         // Create shape node to use during mouse interaction
@@ -89,8 +97,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 		self.scoreLabel?.text = "Score: " + String(data.score);
 		self.highScoreLabel?.text = "High Score: " + String(data.highScore);
 		self.missedLabel?.text = "Missed: " + String(data.missed);
+		self.takePhotoLabel?.text = "Take Photo"
+		self.takePhotoLabel?.fontColor = NSColor.green
+		self.takePhotoLabel?.name = "takephoto"
+	
+		//init capture session for taking pics.
+		do{
+			if let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo){
+				captureSession.addInput(try AVCaptureDeviceInput(device: device))
+				captureSession.sessionPreset = AVCaptureSessionPresetPhoto
+				captureSession.startRunning()
+				imageop.outputSettings = [AVVideoCodecKey:AVVideoCodecJPEG]
+				if(captureSession.canAddOutput(imageop)) {
+					captureSession.addOutput(imageop)
+				}
+				
+			}
+		}
+		catch let error as NSError{
+			print(error)
+		}
+
 	}
 	
+
 	func saveNSCodingData()
 	{
 		if(NSKeyedArchiver.archiveRootObject(self.data, toFile: self.savefilename))
@@ -101,7 +131,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 	
 	func loadNSCodingData()
 	{
-		self.savefilename = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/CoreDataDemo/coreDataDemosave.txt"
+		self.savefilename = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/coreDataDemosave.txt"
 	
 		do
 		{
@@ -167,7 +197,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 		do{
 			if let select = NSDataAsset(name: "Ping") {
 				let selectPlayer = try AVAudioPlayer(data: select.data)
-				selectPlayer.volume = 2
+				selectPlayer.volume = 22
 				selectPlayer.play()
 			}
 		}
@@ -189,7 +219,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
             n.strokeColor = SKColor.red
 			self.addChild(n)
         }
+		for node in self.nodes(at: pos){
+			if(node.name == "takephoto")
+			{
+				takePhoto()
+			}
+		}
     }
+	
+	func takePhoto()
+	{
+		self.isPaused = true
+		if let conn = imageop.connection(withMediaType: AVMediaTypeVideo) {
+			imageop.captureStillImageAsynchronously(from: conn) { (imageDataSampleBuffer, error) -> Void in 
+					let data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer) as NSData
+					let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/CoreDataDemoPhoto" + String(self.PhotoCounter) + ".jpg"
+					data.write(toFile: path, atomically: true)
+					self.PhotoCounter += 1
+				}
+		}
+	}
     
     override func mouseDown(with event: NSEvent) {
         self.touchDown(atPoint: event.location(in: self))
