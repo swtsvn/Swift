@@ -14,6 +14,7 @@ class ViewController: NSViewController {
 
     @IBOutlet var skView: SKView!
     
+	
 	override func viewDidAppear() {
 
 	let presOptions: 
@@ -23,12 +24,11 @@ class ViewController: NSViewController {
         self.view.wantsLayer = true
 		
 	}
-	
+	override func viewDidDisappear() {
+	//NSApp.runModal(for: <#T##NSWindow#>)
+	}
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
-        // including entities and graphs.
         if let scene = GKScene(fileNamed: "GameScene") {
             
             // Get the SKScene from the loaded GKScene
