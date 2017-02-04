@@ -452,7 +452,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CoreDataDemo/ScoreBoardViewController.swift"
@@ -468,15 +468,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CoreDataDemo/ScoreBoardViewController.swift"
-            timestampString = "507868125.971727"
+            timestampString = "507870655.398019"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "tableView(_:viewFor:row:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -541,6 +541,54 @@
                   startingLineNumber = "39"
                   endingLineNumber = "39"
                   offsetFromSymbolStart = "1080">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "CoreDataDemo/ScoreBoardViewController.swift"
+            timestampString = "507870859.773753"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "tableView(_:viewFor:row:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CoreDataDemo.ScoreBoardViewController.tableView (__ObjC.NSTableView, viewFor : Swift.Optional&lt;__ObjC.NSTableColumn&gt;, row : Swift.Int) -&gt; Swift.Optional&lt;__ObjC.NSView&gt;"
+                  moduleName = "CoreDataDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sujathanagarajan/GitHub/Swift/CoreDataDemo/CoreDataDemo/ScoreBoardViewController.swift"
+                  timestampString = "507870861.57794"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "33"
+                  endingLineNumber = "33"
+                  offsetFromSymbolStart = "27">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "CoreDataDemo.ScoreBoardViewController.tableView (__ObjC.NSTableView, viewFor : Swift.Optional&lt;__ObjC.NSTableColumn&gt;, row : Swift.Int) -&gt; Swift.Optional&lt;__ObjC.NSView&gt;"
+                  moduleName = "CoreDataDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/sujathanagarajan/GitHub/Swift/CoreDataDemo/CoreDataDemo/ScoreBoardViewController.swift"
+                  timestampString = "507870861.579755"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "33"
+                  endingLineNumber = "33"
+                  offsetFromSymbolStart = "2649">
                </Location>
             </Locations>
          </BreakpointContent>

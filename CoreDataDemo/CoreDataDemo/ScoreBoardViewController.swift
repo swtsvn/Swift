@@ -29,8 +29,17 @@ class ScoreBoardViewController : NSViewController, NSTableViewDataSource, NSTabl
 	
 	//tell view to display for a specific cell and column
 	func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-			let s = NSTableCellView();
-			s.objectValue = "empty"
+			
+			let s = tableView.make(withIdentifier: (tableColumn?.identifier)!, owner: self) as! NSTableCellView
+			if(tableColumn?.title == "Player Name")
+			{
+				s.textField?.stringValue = appdelegate.data.playerData[row].playername!
+			}
+			else if(tableColumn?.title == "High Score")
+			{
+				s.textField?.stringValue = String(appdelegate.data.playerData[row].highScore)
+			}
+				
 			return s
 		}
 	
