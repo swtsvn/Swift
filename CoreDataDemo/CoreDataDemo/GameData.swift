@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 class PlayerGameData
 {
@@ -20,6 +21,23 @@ class PlayerGameData
 	}
 }
 
+//this is the data model for the table view
+class GameData : NSObject
+{
+	var playerData = [NSManagedObject]()
+	var score : Int32 = 0;
+	var currentPlayerName : String = ""
+	
+	func load()
+	{
+	
+		
+	
+	}
+	
+}
+//NScoding data
+/*
 class GameData : NSObject, NSCoding
 {
 	var score : Int32 = 0;
@@ -43,3 +61,4 @@ class GameData : NSObject, NSCoding
 	
 	
 }
+*/

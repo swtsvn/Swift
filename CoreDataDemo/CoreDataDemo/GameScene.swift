@@ -9,7 +9,6 @@
 import SpriteKit
 import GameplayKit
 import AVFoundation
-//import CoreImage
 import CoreData
 
 class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
@@ -22,7 +21,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
     private var spinnyNode : SKShapeNode?
 	private var scoreLabel : SKLabelNode?
 	private var highScoreLabel : SKLabelNode?
-	private var missedLabel : SKLabelNode?
 	private var takePhotoLabel : SKLabelNode?
 	private var playerNameLabel : SKLabelNode?
 	private var bgPlayer : AVAudioPlayer?	
@@ -56,7 +54,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
         
 		self.scoreLabel = self.childNode(withName: "//scoreLabel") as? SKLabelNode
 		self.highScoreLabel = self.childNode(withName: "//highScoreLabel") as? SKLabelNode
-		self.missedLabel = self.childNode(withName: "//missedLabel") as? SKLabelNode
 		self.takePhotoLabel = self.childNode(withName: "//takePhotoLabel") as? SKLabelNode
 		self.playerNameLabel = self.childNode(withName: "//playerNameLabel") as? SKLabelNode
 		
@@ -100,7 +97,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 				
 		self.scoreLabel?.text = "Score: " + String(appdelegate.data.score);
 	//	self.highScoreLabel?.text = "High Score: " + String(appdelegate.data.highScore);
-		self.missedLabel?.text = "Missed: " + String(appdelegate.data.missed);
 		self.takePhotoLabel?.text = "Take Photo"
 		self.takePhotoLabel?.fontColor = NSColor.green
 		self.takePhotoLabel?.name = "takephoto"
@@ -274,7 +270,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 		
 		self.scoreLabel?.text = "Score: " + String(appdelegate.data.score);
 //		self.highScoreLabel?.text = "High Score: " + String(appdelegate.data.highScore);
-		self.missedLabel?.text = "Missed: " + String(appdelegate.data.missed);
 		
 		
 		if self.children.count < 10 , let snow = SKShapeNode.init(circleOfRadius: 2) as SKShapeNode?{

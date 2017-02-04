@@ -18,8 +18,6 @@ class ScoreBoardViewController : NSViewController, NSTableViewDataSource, NSTabl
 		let tv = tableView.documentView as! NSTableView
 		tv.delegate = self
 		tv.dataSource = self
-	//	tv.addTableColumn(NSTableColumn(identifier: "playerNameColumn"))
-		
 	}
 	
 	//informs how many rows the table will have. 
@@ -33,11 +31,11 @@ class ScoreBoardViewController : NSViewController, NSTableViewDataSource, NSTabl
 			let s = tableView.make(withIdentifier: (tableColumn?.identifier)!, owner: self) as! NSTableCellView
 			if(tableColumn?.title == "Player Name")
 			{
-				s.textField?.stringValue = appdelegate.data.playerData[row].playername!
+				s.textField?.stringValue = appdelegate.data.playerData[row].value(forKey: "name") as!String
 			}
 			else if(tableColumn?.title == "High Score")
 			{
-				s.textField?.stringValue = String(appdelegate.data.playerData[row].highScore)
+				s.textField?.stringValue = appdelegate.data.playerData[row].value(forKey: "highscore") as! String
 			}
 				
 			return s

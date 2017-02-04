@@ -11,6 +11,7 @@
 		D16E9E6C1E450AE6008E674D /* ScoreBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E9E6B1E450AE6008E674D /* ScoreBoardViewController.swift */; };
 		D16E9E6E1E457A18008E674D /* GameMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16E9E6D1E457A18008E674D /* GameMenuController.swift */; };
 		D16E9E701E457C1C008E674D /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D16E9E6F1E457C1C008E674D /* GameScene.sks */; };
+		D16E9E731E45801F008E674D /* ScoreBoard.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D16E9E711E45801F008E674D /* ScoreBoard.xcdatamodeld */; };
 		D1C8B1C41E41D14400C96EBD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8B1C31E41D14400C96EBD /* AppDelegate.swift */; };
 		D1C8B1C81E41D14400C96EBD /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = D1C8B1C71E41D14400C96EBD /* Actions.sks */; };
 		D1C8B1CA1E41D14400C96EBD /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1C8B1C91E41D14400C96EBD /* GameScene.swift */; };
@@ -28,6 +29,7 @@
 		D16E9E6B1E450AE6008E674D /* ScoreBoardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScoreBoardViewController.swift; sourceTree = "<group>"; };
 		D16E9E6D1E457A18008E674D /* GameMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameMenuController.swift; sourceTree = "<group>"; };
 		D16E9E6F1E457C1C008E674D /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		D16E9E721E45801F008E674D /* ScoreBoard.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ScoreBoard.xcdatamodel; sourceTree = "<group>"; };
 		D1C8B1C01E41D14400C96EBD /* CoreDataDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreDataDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1C8B1C31E41D14400C96EBD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D1C8B1C71E41D14400C96EBD /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				D16E9E691E450976008E674D /* PlayerDetailswindow.swift */,
 				D16E9E6D1E457A18008E674D /* GameMenuController.swift */,
 				D16E9E6B1E450AE6008E674D /* ScoreBoardViewController.swift */,
+				D16E9E711E45801F008E674D /* ScoreBoard.xcdatamodeld */,
 				D1C8B1C91E41D14400C96EBD /* GameScene.swift */,
 				D1C8B1E01E41D91F00C96EBD /* GameData.swift */,
 				D1C8B1CB1E41D14400C96EBD /* ViewController.swift */,
@@ -179,6 +182,7 @@
 				D1C8B1CC1E41D14400C96EBD /* ViewController.swift in Sources */,
 				D1C8B1E11E41D91F00C96EBD /* GameData.swift in Sources */,
 				D16E9E6A1E450976008E674D /* PlayerDetailswindow.swift in Sources */,
+				D16E9E731E45801F008E674D /* ScoreBoard.xcdatamodeld in Sources */,
 				D1C8B1CA1E41D14400C96EBD /* GameScene.swift in Sources */,
 				D16E9E6C1E450AE6008E674D /* ScoreBoardViewController.swift in Sources */,
 				D16E9E6E1E457A18008E674D /* GameMenuController.swift in Sources */,
@@ -342,6 +346,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D16E9E711E45801F008E674D /* ScoreBoard.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D16E9E721E45801F008E674D /* ScoreBoard.xcdatamodel */,
+			);
+			currentVersion = D16E9E721E45801F008E674D /* ScoreBoard.xcdatamodel */;
+			path = ScoreBoard.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D1C8B1B81E41D14400C96EBD /* Project object */;
 }

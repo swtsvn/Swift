@@ -31,9 +31,25 @@ class PlayerDataViewController: NSViewController {
 		}
 		else
 		{
-			//save player name.
+			//save player name to Persistent Store
 			let app = NSApplication.shared().delegate as! AppDelegate
-			app.data.currentPlayerName = PlayerNameText.stringValue
+			let CoreDataEntity = NSEntityDescription.entity(forEntityName: "Player", in: app.managedObjectContext)
+			let row = NSManagedObject(entity: CoreDataEntity!, insertInto: app.managedObjectContext)
+			
+			row.setValue(PlayerNameText.stringValue, forKey: "name")
+			row.setValue(0, forKey: "highscore")
+			
+			do{
+				try app.managedObjectContext.save()
+				app.data.playerData.append(row);
+				app.data.currentPlayerName = PlayerNameText.stringValue
+		
+			}
+			catch let error as NSError {
+				print(error)
+			}
+			
+			//save player to array
 			self.presentViewControllerAsSheet(GameVC)	
 		}
 		
