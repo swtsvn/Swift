@@ -16,7 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 	
 	lazy var persistentContainer: NSPersistentContainer = {
 
-    let container = NSPersistentContainer(name: "you_model_file_name")
+    let container = NSPersistentContainer(name: "app name")
     container.loadPersistentStores(completionHandler: { (storeDescription, error) in
         if let error = error {
 

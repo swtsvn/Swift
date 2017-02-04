@@ -291,6 +291,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
         }
 		if(self.children.count >= 11)
 		{
+			//@todo save only in the end
 			appdelegate.saveData();
 		}
 
