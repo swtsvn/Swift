@@ -14,11 +14,22 @@ class ViewController: NSViewController {
 
     @IBOutlet var skView: SKView!
     
+	
+	override func viewDidAppear() {
+
+	let presOptions: 
+	 NSApplicationPresentationOptions = ([.fullScreen,.autoHideMenuBar])   
+        let optionsDictionary = [NSFullScreenModeApplicationPresentationOptions : NSNumber(value: presOptions.rawValue)]
+        self.view.enterFullScreenMode(NSScreen.main()!, withOptions:optionsDictionary)
+        self.view.wantsLayer = true
+		
+	}
+	override func viewDidDisappear() {
+		print("disappeared");
+	}
+	
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
-        // including entities and graphs.
         if let scene = GKScene(fileNamed: "GameScene") {
             
             // Get the SKScene from the loaded GKScene

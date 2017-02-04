@@ -9,6 +9,7 @@
 import SpriteKit
 import GameplayKit
 import AVFoundation
+import CoreData
 
 class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
     
@@ -20,24 +21,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
     private var spinnyNode : SKShapeNode?
 	private var scoreLabel : SKLabelNode?
 	private var highScoreLabel : SKLabelNode?
-	private var missedLabel : SKLabelNode?
+	private var takePhotoLabel : SKLabelNode?
+	private var playerNameLabel : SKLabelNode?
 	private var bgPlayer : AVAudioPlayer?	
-	private var selectPlayer : AVAudioPlayer?
 	let snowCategory : UInt32 = 0x1
 	let spinnyCategory : UInt32 = 0x1 << 1
-	var savefilename : String = ""
-	var data = GameData()
+	
+	var PhotoCounter : UInt32 = 0;
+	var imageop = AVCaptureStillImageOutput()
+	let captureSession = AVCaptureSession()
+	
+	//core data
+	var pics = [NSManagedObject]()
+	var appdelegate = NSApplication.shared().delegate as! AppDelegate
 	
 	override func didMove(to view: SKView) {
 		load()
 	}
-    override func sceneDidLoad() {
+	
+	override func sceneDidLoad() {
 	}
 	
 	func load(){
-        
-	    self.lastUpdateTime = 0
-        
+        self.lastUpdateTime = 0
+       
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//CoreDataDemo") as? SKLabelNode
         if let label = self.label {
@@ -47,7 +54,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
         
 		self.scoreLabel = self.childNode(withName: "//scoreLabel") as? SKLabelNode
 		self.highScoreLabel = self.childNode(withName: "//highScoreLabel") as? SKLabelNode
-		self.missedLabel = self.childNode(withName: "//missedLabel") as? SKLabelNode
+		self.takePhotoLabel = self.childNode(withName: "//takePhotoLabel") as? SKLabelNode
+		self.playerNameLabel = self.childNode(withName: "//playerNameLabel") as? SKLabelNode
 		
 		
         // Create shape node to use during mouse interaction
@@ -84,37 +92,40 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 			print(error)
 		}
 		
-		loadNSCodingData()
 		
-		self.scoreLabel?.text = "Score: " + String(data.score);
-		self.highScoreLabel?.text = "High Score: " + String(data.highScore);
-		self.missedLabel?.text = "Missed: " + String(data.missed);
-	}
-	
-	func saveNSCodingData()
-	{
-		if(NSKeyedArchiver.archiveRootObject(self.data, toFile: self.savefilename))
-		{
-			print("successfully written NSCoding save data")
-		}
-	}
-	
-	func loadNSCodingData()
-	{
-		self.savefilename = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/CoreDataDemo/coreDataDemosave.txt"
-	
-		do
-		{
-			if let decodedData = NSData(contentsOfFile: self.savefilename){
-				self.data = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(decodedData) as! GameData
+		
+				
+		self.scoreLabel?.text = "Score: " + String(appdelegate.data.score);
+	//	self.highScoreLabel?.text = "High Score: " + String(appdelegate.data.highScore);
+		self.takePhotoLabel?.text = "Take Photo"
+		self.takePhotoLabel?.fontColor = NSColor.green
+		self.takePhotoLabel?.name = "takephoto"
+		self.playerNameLabel?.text = "Player Name: " + appdelegate.data.currentPlayerName
+		
+		//init capture session for taking pics.
+		do{
+			if let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo){
+				captureSession.addInput(try AVCaptureDeviceInput(device: device))
+				captureSession.sessionPreset = AVCaptureSessionPresetPhoto
+				captureSession.startRunning()
+				imageop.outputSettings = [AVVideoCodecKey:AVVideoCodecJPEG]
+				if(captureSession.canAddOutput(imageop)) {
+					captureSession.addOutput(imageop)
+				}
+				
 			}
 		}
 		catch let error as NSError{
-			print(error);
+			print(error)
 		}
-			
+		
+	
 	}
 	
+	//override func didApp
+
+	
+		
 	func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
 		bgPlayer!.play();
 	}
@@ -145,7 +156,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 		{
 			if(contact.bodyB.categoryBitMask & snowCategory != 0)
 			{
-				data.score += 1
+				appdelegate.data.score += 1
 				playSelectSound()
 				playSelectAnimation(contact.bodyB, spinny: contact.bodyA)
 			}
@@ -154,7 +165,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 		{
 			if(contact.bodyB.categoryBitMask & spinnyCategory != 0)
 			{
-				data.score += 1
+				appdelegate.data.score += 1
 				playSelectSound()
 				playSelectAnimation(contact.bodyA, spinny: contact.bodyB)
 			}
@@ -167,7 +178,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 		do{
 			if let select = NSDataAsset(name: "Ping") {
 				let selectPlayer = try AVAudioPlayer(data: select.data)
-				selectPlayer.volume = 2
+				selectPlayer.volume = 22
 				selectPlayer.play()
 			}
 		}
@@ -189,7 +200,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
             n.strokeColor = SKColor.red
 			self.addChild(n)
         }
+		for node in self.nodes(at: pos){
+			if(node.name == "takephoto"){
+				takePhoto()
+			}
+			
+		}
     }
+
+	
+	func takePhoto()
+	{
+		self.isPaused = true
+		if let conn = imageop.connection(withMediaType: AVMediaTypeVideo) {
+			imageop.captureStillImageAsynchronously(from: conn) { (imageDataSampleBuffer, error) -> Void in 
+					let data = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(imageDataSampleBuffer) as NSData
+					let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/CoreDataDemoPhoto" + String(self.PhotoCounter) + ".jpg"
+					data.write(toFile: path, atomically: true)
+					self.PhotoCounter += 1
+					self.isPaused = false
+				
+				}
+		}
+	}
     
     override func mouseDown(with event: NSEvent) {
         self.touchDown(atPoint: event.location(in: self))
@@ -235,9 +268,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
         self.lastUpdateTime = currentTime
 		
 		
-		self.scoreLabel?.text = "Score: " + String(data.score);
-		self.highScoreLabel?.text = "High Score: " + String(data.highScore);
-		self.missedLabel?.text = "Missed: " + String(data.missed);
+		self.scoreLabel?.text = "Score: " + String(appdelegate.data.score);
+//		self.highScoreLabel?.text = "High Score: " + String(appdelegate.data.highScore);
 		
 		
 		if self.children.count < 10 , let snow = SKShapeNode.init(circleOfRadius: 2) as SKShapeNode?{
@@ -259,7 +291,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
         }
 		if(self.children.count >= 11)
 		{
-			saveNSCodingData();
+			appdelegate.saveNSCodingData();
 		}
 
     }
