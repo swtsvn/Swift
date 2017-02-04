@@ -99,12 +99,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 		
 				
 		self.scoreLabel?.text = "Score: " + String(appdelegate.data.score);
-		self.highScoreLabel?.text = "High Score: " + String(appdelegate.data.highScore);
+	//	self.highScoreLabel?.text = "High Score: " + String(appdelegate.data.highScore);
 		self.missedLabel?.text = "Missed: " + String(appdelegate.data.missed);
 		self.takePhotoLabel?.text = "Take Photo"
 		self.takePhotoLabel?.fontColor = NSColor.green
 		self.takePhotoLabel?.name = "takephoto"
-		self.playerNameLabel?.text = "Player Name: " + appdelegate.data.playername!
+		self.playerNameLabel?.text = "Player Name: " + appdelegate.data.currentPlayerName
 		
 		//init capture session for taking pics.
 		do{
@@ -205,12 +205,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 			self.addChild(n)
         }
 		for node in self.nodes(at: pos){
-			if(node.name == "takephoto")
-			{
+			if(node.name == "takephoto"){
 				takePhoto()
 			}
+			
 		}
     }
+
 	
 	func takePhoto()
 	{
@@ -272,7 +273,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
 		
 		
 		self.scoreLabel?.text = "Score: " + String(appdelegate.data.score);
-		self.highScoreLabel?.text = "High Score: " + String(appdelegate.data.highScore);
+//		self.highScoreLabel?.text = "High Score: " + String(appdelegate.data.highScore);
 		self.missedLabel?.text = "Missed: " + String(appdelegate.data.missed);
 		
 		

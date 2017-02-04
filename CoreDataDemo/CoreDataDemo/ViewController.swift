@@ -25,8 +25,9 @@ class ViewController: NSViewController {
 		
 	}
 	override func viewDidDisappear() {
-	//NSApp.runModal(for: <#T##NSWindow#>)
+		print("disappeared");
 	}
+	
     override func viewDidLoad() {
         super.viewDidLoad()
         if let scene = GKScene(fileNamed: "GameScene") {

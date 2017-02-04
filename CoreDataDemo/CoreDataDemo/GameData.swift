@@ -8,23 +8,37 @@
 
 import Foundation
 
+class PlayerGameData
+{
+	var playername : String?
+	var highScore : Int32 = 0;
+	
+	init(_ score : Int32, name : String)
+	{
+		playername = name
+		highScore = score
+	}
+}
+
 class GameData : NSObject, NSCoding
 {
 	var score : Int32 = 0;
-	var highScore : Int32 = 0;
 	var missed : Int32 = 0;
 	var savefilename : String = "";
-	var playername : String?
-	
+	var playerData = [PlayerGameData]()
+	var currentPlayerName : String = ""
 	func encode(with aCoder: NSCoder) {
+		
 		aCoder.encode(self.score, forKey: "highScore")
-		aCoder.encode(self.playername, forKey: "name")
+		aCoder.encode(self.currentPlayerName, forKey: "name")
 	}
 	
 	required convenience init?(coder aDecoder: NSCoder) {
 		self.init(); //because this class extends NSObject, calling init here is fine.
-		self.highScore = aDecoder.decodeInt32(forKey: "highScore")
-		self.playername = (aDecoder.decodeObject(forKey: "name") as? String?)!
+		let highScore = aDecoder.decodeInt32(forKey: "highScore")
+		if let playername = aDecoder.decodeObject(forKey: "name") as? String{
+			self.playerData.append(PlayerGameData(highScore, name: playername))
+		}
 	}
 	
 	

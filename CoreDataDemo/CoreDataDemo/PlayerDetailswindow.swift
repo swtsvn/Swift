@@ -10,7 +10,7 @@ import Cocoa
 
 class PlayerDataViewController: NSViewController {
 	
-	lazy var GameVC : ViewController = { return self.storyboard!.instantiateController(withIdentifier: "GameViewControllerID") as! ViewController }()
+	lazy var GameVC : GameMenuController = { return self.storyboard!.instantiateController(withIdentifier: "GameMenuControllerID") as! GameMenuController }()
 	//lazy var to delay loading of the view controller
 	
 	lazy var errorVC : NSViewController = { return self.storyboard!.instantiateController(withIdentifier: "EnterPlayerDataControllerID") as! NSViewController }()
@@ -33,7 +33,7 @@ class PlayerDataViewController: NSViewController {
 		{
 			//save player name.
 			let app = NSApplication.shared().delegate as! AppDelegate
-			app.data.playername = PlayerNameText.stringValue
+			app.data.currentPlayerName = PlayerNameText.stringValue
 			self.presentViewControllerAsSheet(GameVC)	
 		}
 		
