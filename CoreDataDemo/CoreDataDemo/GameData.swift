@@ -27,13 +27,8 @@ class GameData : NSObject
 	var playerData = [NSManagedObject]()
 	var score : Int32 = 0;
 	var currentPlayerName : String = ""
+	var highScore : Int32 = 0;
 	
-	func load()
-	{
-	
-		
-	
-	}
 	
 }
 //NScoding data

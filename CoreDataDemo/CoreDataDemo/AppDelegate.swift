@@ -114,7 +114,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
-    
+    /*
 	func loadNSCodingData()
 	{
 		self.savefilename = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/coreDataDemosave.txt"
@@ -138,7 +138,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			print("successfully written NSCoding save data")
 		}
 	}
-	
+	*/
 	func applicationDidFinishLaunching(_ aNotification: Notification) {
 		// Insert code here to initialize your application
 		let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Player")
@@ -150,6 +150,52 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			catch let error as NSError{
 				print(error)
 			}
+	}
+
+
+	func saveData() {
+	
+		// Insert code here to initialize your application
+		
+		let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Player")
+		var found : Bool = false
+		do{
+			let results = try self.managedObjectContext.fetch(fetchRequest)
+			let players = results as! [NSManagedObject]
+			for r in players{
+				let name = r.value(forKey: "name") as! String
+				if(name == self.data.currentPlayerName)
+				{
+					//avoid duplicate entry
+					found = true
+					r.setValue(self.data.score, forKey: "highscore")
+					break;
+				}
+			}
+		}
+		catch let error as NSError{
+				print(error)
+		}
+		let app = NSApplication.shared().delegate as! AppDelegate
+			
+		if(!found)
+		{
+			
+			let CoreDataEntity = NSEntityDescription.entity(forEntityName: "Player", in: app.managedObjectContext)
+			let row = NSManagedObject(entity: CoreDataEntity!, insertInto: app.managedObjectContext)
+		
+			row.setValue(self.data.currentPlayerName, forKey: "name")
+			row.setValue(self.data.score, forKey: "highscore")
+			
+		}
+		
+		do{
+				try app.managedObjectContext.save()
+			}
+			catch let error as NSError {
+				print(error)
+			}
+
 	}
 
 

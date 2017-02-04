@@ -35,7 +35,7 @@ class ScoreBoardViewController : NSViewController, NSTableViewDataSource, NSTabl
 			}
 			else if(tableColumn?.title == "High Score")
 			{
-				s.textField?.stringValue = appdelegate.data.playerData[row].value(forKey: "highscore") as! String
+				s.textField?.stringValue = String(appdelegate.data.playerData[row].value(forKey: "highscore") as! Int32)
 			}
 				
 			return s

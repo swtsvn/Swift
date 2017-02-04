@@ -291,7 +291,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate, AVAudioPlayerDelegate {
         }
 		if(self.children.count >= 11)
 		{
-			appdelegate.saveNSCodingData();
+			appdelegate.saveData();
 		}
 
     }

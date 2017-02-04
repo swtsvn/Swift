@@ -23,7 +23,9 @@ class PlayerDataViewController: NSViewController {
 	@IBOutlet var PlayerNameText: NSTextField!
 
 	@IBAction func PlayerDataPlayButtonClick(_ sender: NSButton) {
-		
+		let app = NSApplication.shared().delegate as! AppDelegate
+		app.data.currentPlayerName = PlayerNameText.stringValue
+		app.data.highScore = 0
 		if(PlayerNameText.stringValue == "")
 		{
 			//error window
@@ -32,23 +34,33 @@ class PlayerDataViewController: NSViewController {
 		else
 		{
 			//save player name to Persistent Store
-			let app = NSApplication.shared().delegate as! AppDelegate
 			let CoreDataEntity = NSEntityDescription.entity(forEntityName: "Player", in: app.managedObjectContext)
-			let row = NSManagedObject(entity: CoreDataEntity!, insertInto: app.managedObjectContext)
-			
-			row.setValue(PlayerNameText.stringValue, forKey: "name")
-			row.setValue(0, forKey: "highscore")
-			
-			do{
-				try app.managedObjectContext.save()
-				app.data.playerData.append(row);
-				app.data.currentPlayerName = PlayerNameText.stringValue
-		
+			var found : Bool = false;
+			for player in app.data.playerData{
+				let name = player.value(forKey: "name") as! String
+				if(name == PlayerNameText.stringValue)
+				{
+					//avoid duplicate entry
+					found = true;
+					app.data.highScore = player.value(forKey: "highscore") as! Int32
+				}
 			}
-			catch let error as NSError {
-				print(error)
+			if !found {
+				let row = NSManagedObject(entity: CoreDataEntity!, insertInto: app.managedObjectContext)
+				row.setValue(PlayerNameText.stringValue, forKey: "name")
+				row.setValue(0, forKey: "highscore")
+			
+				do{
+					try app.managedObjectContext.save()
+					app.data.playerData.append(row);
+							
+				}
+				catch let error as NSError {
+					print(error)
+				}
 			}
 			
+
 			//save player to array
 			self.presentViewControllerAsSheet(GameVC)	
 		}
